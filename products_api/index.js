@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { productModel } = require('./models');
 const port = 8080;
-mongoose.connect(uri);
 
 const uri = "mongodb+srv://nodeJS:NodeJS4321@cluster0.wr9ipqk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
