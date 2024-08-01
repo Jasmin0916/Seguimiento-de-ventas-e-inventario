@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: "*",
-    methods: ["POST"]
+    methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
 app.get('/', (req, res) => {
@@ -30,7 +30,8 @@ app.get('/products', async (req, res) => {
         const products = await productModel.find({});
         res.json(products);
     } catch (error) {
-        res.status(500).send(error);
+        console.error('Error fetching products:', error);
+        res.status(500).json({ error: 'Error al obtener los productos' });
     }
 });
 
@@ -48,9 +49,54 @@ app.post('/products', async (req, res) => {
         });
 
         const data = await newProduct.save();
-        res.status(201).send(data);
+        res.status(201).json(data);
     } catch (error) {
-        res.status(400).send(error);
+        console.error('Error creating product:', error);
+        res.status(400).json({ error: 'Error al registrar el producto' });
+    }
+});
+
+// Obtener un producto por ID
+app.get('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await productModel.findById(id);
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).json({ error: 'Error al obtener el producto' });
+    }
+});
+
+// Actualizar la cantidad de un producto
+app.put('/products/:id', async (req, res) => {
+    try {
+        const { quantity } = req.body;
+        const product = await productModel.findByIdAndUpdate(req.params.id, { quantity }, { new: true });
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(400).json({ error: 'Error al actualizar el producto' });
+    }
+});
+
+// Eliminar un producto
+app.delete('/products/:id', async (req, res) => {
+    try {
+        const product = await productModel.findByIdAndDelete(req.params.id);
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        res.status(204).send(); // No content
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(400).json({ error: 'Error al eliminar el producto' });
     }
 });
 

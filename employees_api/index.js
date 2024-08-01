@@ -18,19 +18,21 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: "*",
-    methods: ["POST"]
+    methods: ["POST", "GET"]
 }));
 
 app.get('/', (req, res) => {
     res.send("I am alive EmployeesAPI");
 });
 
+// Listar todos los empleados
 app.get('/employees', async (req, res) => {
     try {
         const employees = await employeesModel.find({});
         res.json(employees);
     } catch (error) {
-        res.status(500).send(error);
+        console.error('Error fetching employees:', error);
+        res.status(500).json({ error: 'Error al obtener los empleados' });
     }
 });
 
@@ -49,13 +51,13 @@ app.post('/employees', async (req, res) => {
         });
 
         const data = await newEmployee.save();
-        return res.status(201).json(data);
+        res.status(201).json(data);
     } catch (error) {
-        res.status(400).send(error);
-        console.log(error);
+        console.error('Error creating employee:', error);
+        res.status(400).json({ error: 'Error al registrar el empleado' });
     }
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Servidor corriendo en ${port}`);
 });

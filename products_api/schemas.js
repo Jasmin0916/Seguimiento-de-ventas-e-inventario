@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
   },
   productType: {
     type: String,
-    enum: ['Peripheral devices', 'Laptop and computer spare parts', 'Printer spare parts'],
+    enum: ['Dispositivos periféricos', 'Repuesto de laptops y computadoras', 'Repuesto de impresoras'],
     required: true,
   }
 });
