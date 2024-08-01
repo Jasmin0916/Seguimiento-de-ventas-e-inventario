@@ -37,9 +37,7 @@ app.get('/employees', async (req, res) => {
 // Ruta para registrar un nuevo empleado
 app.post('/employees', async (req, res) => {
     try {
-        console.log("above", req.body);
         const { lastName, middleName, firstNames, dni, phone, address, email } = req.body;
-        console.log("below", req.body);
         const newEmployee = new employeesModel({
             lastName,
             middleName,
