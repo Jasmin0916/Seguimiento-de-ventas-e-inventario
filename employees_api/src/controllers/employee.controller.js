@@ -37,7 +37,7 @@ const createEmployee = async (req, res) => {
         console.error('Error creating employee:', error);
         res.status(400).json({ error: 'Error al registrar el empleado' });
     }
-};
+}; 
 
 const getEmployeeById = async (req, res) => {
     try {

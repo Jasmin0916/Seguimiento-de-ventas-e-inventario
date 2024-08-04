@@ -10,4 +10,4 @@ router.get("/sales/:id", authenticateToken, verifyRole(['admin', 'employee']), g
 router.put("/sales/:id", authenticateToken, verifyRole('admin'), updatedSale);
 router.delete("/sales/:id", authenticateToken, verifyRole('admin'), deleteSale);
 
-module.exports = router;
+module.exports = router; 

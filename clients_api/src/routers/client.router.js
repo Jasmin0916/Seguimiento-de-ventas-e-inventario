@@ -11,3 +11,4 @@ router.put("/clients/:dni", authenticateToken, verifyRole(['admin', 'employee'])
 router.delete("/clients/:dni", authenticateToken, verifyRole(['admin']), deleteClient);
 
 module.exports = router;
+ 

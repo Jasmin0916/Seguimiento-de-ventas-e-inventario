@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const app = express();
 const port = 8084;
 
-
 // Conectar a MongoDB
 const uri = "mongodb+srv://nodeJS:NodeJS4321@cluster0.wr9ipqk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -17,7 +16,7 @@ mongoose.connect(uri).then(() => {
 });
 
 
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors({
     origin: "*",
     methods: ["POST"]

@@ -22,7 +22,7 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"]
 }));
 
-app.use(EmployeesRouter)
+app.use(EmployeesRouter) 
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en ${port}`);

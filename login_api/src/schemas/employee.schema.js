@@ -19,7 +19,7 @@ const employeeSchema = new mongoose.Schema({
         type: String,
     },
     address: {
-        type: String,
+        type: String, 
     },
     email: {
         type: String,

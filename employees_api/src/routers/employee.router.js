@@ -10,4 +10,4 @@ router.get("/employees/:id", authenticateToken, verifyRole('admin'), getEmployee
 router.put("/employees/:id", authenticateToken, verifyRole('admin'), uptateEmployee);
 router.delete("/employees/:id", deleteEmployee);
 
-module.exports = router;
+module.exports = router; 

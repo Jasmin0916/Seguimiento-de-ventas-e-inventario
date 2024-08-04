@@ -21,5 +21,5 @@ const generateReceiptId = async () => {
         throw new Error('Error al generar el ID de boleta');
     }
 };
-
+ 
 module.exports = { generateReceiptId };

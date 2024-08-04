@@ -11,3 +11,4 @@ router.put("/products/:id", authenticateToken, verifyRole(['admin', 'employee'])
 router.delete("/products/:id", authenticateToken, verifyRole(['admin']), deleteProduct);
 
 module.exports = router;
+ 

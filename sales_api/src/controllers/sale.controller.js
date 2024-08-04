@@ -116,7 +116,7 @@ const getSaleById = async (req, res) => {
         console.error('Error fetching sale:', error);
         res.status(500).json({ error: 'Error al obtener la venta' });
     }
-};
+}; 
 
 // Actualizar una venta - Solo para administradores
 const updatedSale = async (req, res) => {

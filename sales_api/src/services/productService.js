@@ -17,7 +17,7 @@ module.exports = {
                 throw new Error('Error al obtener el producto');
             }
         }
-    },
+    }, 
 
     updateProductQuantity: async function(productId, newQuantity, token) {
         try {

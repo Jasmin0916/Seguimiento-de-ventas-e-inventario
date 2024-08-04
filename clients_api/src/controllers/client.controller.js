@@ -76,7 +76,7 @@ const updateClient = async (req, res) => {
         res.status(500).json({ error: 'Error al actualizar el cliente' });
     }
 };
-// Eliminar un cliente
+// Eliminar un cliente 
 const deleteClient = async (req, res) => {
     try {
         const { dni } = req.params;

@@ -25,7 +25,7 @@ const verifyRole = (roles) => {
         } else {
             return res.status(403).json({ message: "Acceso denegago" });
         }
-    };
+    }; 
 };
 
 module.exports = { authenticateToken, verifyRole };

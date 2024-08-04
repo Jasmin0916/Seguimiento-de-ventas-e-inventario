@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
             return res.sendStatus(403);
         }
         req.user = user;
-        next();
+        next(); 
     });
 };
 

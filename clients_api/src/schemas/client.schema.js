@@ -13,7 +13,7 @@ const clientSchema = new mongoose.Schema({
   middleName: {
     type: String,
     required: true,
-  },
+  }, 
   firstNames: {
     type: String,
     required: true,
