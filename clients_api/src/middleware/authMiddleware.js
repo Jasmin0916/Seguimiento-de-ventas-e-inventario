@@ -8,19 +8,22 @@ const authenticateToken = (req, res, next) => {
     if (token == null) return res.sendStatus(401);
 
     jwt.verify(token, 'secret_key', (err, user) => {
-        if (err) return res.sendStatus(403);
+        if (err) {
+            return res.sendStatus(403);
+        }
         req.user = user;
         next();
     });
 };
 
 // Verificar el rol del usuario
-const verifyRole = (role) => {
+const verifyRole = (roles) => {
     return (req, res, next) => {
-        if (req.user && req.user.role === role) {
+        // Verificar si el rol del usuario está en la lista de roles permitidos
+        if (req.user && roles.includes(req.user.role)) {
             next();
         } else {
-            return res.status(403).json({ message: "Access denied" });
+            return res.status(403).json({ message: "Acceso denegago" });
         }
     };
 };

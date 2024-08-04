@@ -1,13 +1,16 @@
 const axios = require("axios");
 
 module.exports = {
-    getProductById: async function(productId) {
+    getProductById: async function(productId, token) {
         try {
-            const response = await axios.get(`http://localhost:8080/products/${productId}`);
+            const response = await axios.get(`http://localhost:8080/products/${productId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             return response.data;
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                // Producto no encontrado
                 return null;
             } else {
                 console.error(`Error fetching product by ID ${productId}:`, error);
@@ -16,9 +19,13 @@ module.exports = {
         }
     },
 
-    updateProductQuantity: async function(productId, newQuantity) {
+    updateProductQuantity: async function(productId, newQuantity, token) {
         try {
-            const response = await axios.put(`http://localhost:8080/products/${productId}`, { quantity: newQuantity });
+            const response = await axios.put(`http://localhost:8080/products/${productId}`, { quantity: newQuantity }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             return response.data;
         } catch (error) {
             console.error(`Error updating product quantity for ID ${productId}:`, error);

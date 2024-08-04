@@ -31,9 +31,19 @@ const saleSchema = new mongoose.Schema({
       }
     }
   ],
-  clientDni: {
-    type: String,
-    required: true
+  client: {
+    clientDni: {
+      type: String,
+      required: true
+    },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    }
   },
   total: {
     type: Number,
@@ -49,7 +59,14 @@ const saleSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Employee'
     },
-    name: String
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    }
   }
 });
 
