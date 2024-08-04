@@ -24,6 +24,17 @@ app.get('/', (req, res) => {
     res.send("I am alive Clients");
 });
 
+// Obtener todos los clientes
+app.get('/clients', async (req, res) => {
+    try {
+        const clients = await clientModel.find();
+        res.json(clients);
+    } catch (error) {
+        console.error('Error fetching clients:', error);
+        res.status(500).json({ error: 'Error al obtener los clientes' });
+    }
+});
+
 // Obtener un cliente por DNI
 app.get('/clients/:dni', async (req, res) => {
     try {
@@ -65,7 +76,54 @@ app.post('/clients', async (req, res) => {
         console.error('Error registering client:', error);
         res.status(500).json({ error: 'Error al registrar el cliente' });
     }
-})
+});
+
+// Actualizar un cliente por DNI
+app.put('/clients/:dni', async (req, res) => {
+    try {
+        const { dni } = req.params;
+        const { lastName, middleName, firstNames, phone } = req.body;
+
+        // Encontrar el cliente por DNI
+        const client = await clientModel.findOne({ dni });
+        if (!client) {
+            return res.status(404).json({ error: 'Cliente no encontrado' });
+        }
+
+        // Actualizar los datos del cliente
+        client.lastName = lastName || client.lastName;
+        client.middleName = middleName || client.middleName;
+        client.firstNames = firstNames || client.firstNames;
+        client.phone = phone || client.phone;
+
+        const updatedClient = await client.save();
+        res.json(updatedClient);
+    } catch (error) {
+        console.error('Error updating client:', error);
+        res.status(500).json({ error: 'Error al actualizar el cliente' });
+    }
+});
+
+// Eliminar un cliente por DNI
+app.delete('/clients/:dni', async (req, res) => {
+    try {
+        const { dni } = req.params;
+ 
+        // Encontrar el cliente por DNI
+        const client = await clientModel.findOne({ dni });
+        if (!client) {
+            return res.status(404).json({ error: 'Cliente no encontrado' });
+        }
+
+        // Eliminar el cliente
+        await clientModel.deleteOne({ dni });
+        res.status(204).send();
+    } catch (error) {
+        console.error('Error deleting client:', error);
+        res.status(500).json({ error: 'Error al eliminar el cliente' });
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en ${port}`);
