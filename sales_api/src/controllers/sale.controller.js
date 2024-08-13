@@ -26,19 +26,19 @@ const createSale = async (req, res) => {
             return res.status(400).json({ error: 'Información del empleado no válida' });
         }
 
-        let client = null;
         let clientFirstName = '';
         let clientLastName = '';
+        let clientDocument = clientDni;
 
         if (receiptType === 'DNI') {
-            client = await clientService.getClientByDni(clientDni, token);
+            const client = await clientService.getClientByDni(clientDni, token);
             if (!client) {
                 return res.status(404).json({ error: 'Cliente no encontrado, registre el cliente primero' });
             }
             clientFirstName = client.firstNames;
             clientLastName = client.lastName;
         } else if (receiptType === 'Simple') {
-            clientDni = '11111111';
+            clientDocument = '11111111';
         } else {
             return res.status(400).json({ error: 'Tipo de boleta no válido' });
         }
@@ -71,9 +71,10 @@ const createSale = async (req, res) => {
 
         const newSale = new saleModel({
             receiptId,
+            receiptType,
             products: saleProducts,
             client: {
-                clientDni,
+                clientDni: clientDocument,
                 firstName: clientFirstName,
                 lastName: clientLastName
             },
@@ -99,7 +100,8 @@ const createSale = async (req, res) => {
         console.error('Error registering sale:', error);
         res.status(500).json({ error: 'Error al registrar la venta' });
     }
-}
+};
+
 
 // Obtener una venta por ID
 const getSaleById = async (req, res) => {
@@ -116,7 +118,7 @@ const getSaleById = async (req, res) => {
         console.error('Error fetching sale:', error);
         res.status(500).json({ error: 'Error al obtener la venta' });
     }
-}; 
+};
 
 // Actualizar una venta - Solo para administradores
 const updatedSale = async (req, res) => {
@@ -130,9 +132,20 @@ const updatedSale = async (req, res) => {
         }
 
         const token = req.headers['authorization']?.split(' ')[1];
-        const client = receiptType === 'DNI' ? await clientService.getClientByDni(clientDni, token) : null;
-        if (receiptType === 'DNI' && !client) {
-            return res.status(404).json({ error: 'Cliente no encontrado, registre el cliente primero' });
+        let clientFirstName = '';
+        let clientLastName = '';
+
+        if (receiptType === 'DNI') {
+            const client = await clientService.getClientByDni(clientDni, token);
+            if (!client) {
+                return res.status(404).json({ error: 'Cliente no encontrado, registre el cliente primero' });
+            }
+            clientFirstName = client.firstNames;
+            clientLastName = client.lastName;
+        } else if (receiptType === 'Simple') {
+            clientDni = '11111111';
+        } else {
+            return res.status(400).json({ error: 'Tipo de boleta no válido' });
         }
 
         let total = 0;
@@ -155,8 +168,13 @@ const updatedSale = async (req, res) => {
             };
         }));
 
+        sale.receiptType = receiptType;
         sale.products = saleProducts;
-        sale.clientDni = clientDni || '11111111';
+        sale.client = {
+            clientDni,
+            firstName: clientFirstName,
+            lastName: clientLastName
+        };
         sale.total = total;
 
         const updatedSale = await sale.save();
@@ -172,6 +190,7 @@ const updatedSale = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Eliminar una venta - Solo para administradores
 const deleteSale = async (req, res) => {

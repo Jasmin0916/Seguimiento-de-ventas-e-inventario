@@ -6,6 +6,11 @@ const saleSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  receiptType: {
+    type: String,
+    enum: ['DNI', 'Simple'],
+    required: true
+  },
   products: [
     {
       productId: {
@@ -21,7 +26,7 @@ const saleSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      salePrice: { 
+      salePrice: {
         type: Number,
         required: true
       },
