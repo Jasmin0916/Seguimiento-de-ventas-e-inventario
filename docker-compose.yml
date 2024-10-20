@@ -1,0 +1,50 @@
+services:
+  clients_api:
+    build:
+      context: ./clients_api
+      dockerfile: Dockerfile
+    #image: nodejs
+    container_name: clients_api
+    restart: unless-stopped
+    ports:
+      - "82:8080"
+
+  employees_api:
+    build:
+      context: ./employees_api
+      dockerfile: Dockerfile
+    #image: nodejs
+    container_name: employees_api
+    restart: unless-stopped
+    ports:
+      - "81:8080"
+
+  login_api:
+    build:
+      context: ./login_api
+      dockerfile: Dockerfile
+    #image: nodejs
+    container_name: login_api
+    restart: unless-stopped
+    ports:
+      - "84:8080"
+
+  products_api:
+    build:
+      context: ./products_api
+      dockerfile: Dockerfile
+    #image: nodejs
+    container_name: products_api
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+
+  sales_api:
+    build:
+      context: ./sales_api
+      dockerfile: Dockerfile
+    #image: nodejs
+    container_name: sales_api
+    restart: unless-stopped
+    ports:
+      - "83:8080"

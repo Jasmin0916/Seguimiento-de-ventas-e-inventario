@@ -23,7 +23,7 @@ const verifyRole = (roles) => {
         if (req.user && roles.includes(req.user.role)) {
             next();
         } else {
-            return res.status(403).json({ message: "Acceso denegago" });
+            return res.status(403).json({ message: "Acceso denegado" });
         }
     };
 };

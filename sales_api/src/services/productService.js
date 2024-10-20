@@ -3,7 +3,7 @@ const axios = require("axios");
 module.exports = {
     getProductById: async function(productId, token) {
         try {
-            const response = await axios.get(`http://localhost:8080/products/${productId}`, {
+            const response = await axios.get(`http://products_api:8080/products/${productId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -21,7 +21,7 @@ module.exports = {
 
     updateProductQuantity: async function(productId, newQuantity, token) {
         try {
-            const response = await axios.put(`http://localhost:8080/products/${productId}`, { quantity: newQuantity }, {
+            const response = await axios.put(`http://products_api:8080/products/${productId}`, { quantity: newQuantity }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
