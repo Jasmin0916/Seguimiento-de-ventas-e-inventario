@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const getEmployeeById = async (employeeId, token) => {
     try {
-        const response = await axios.get(`http://employees_api:8080/employees/${employeeId}`, {
+        const response = await axios.get(`http://localhost:8081/employees/${employeeId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

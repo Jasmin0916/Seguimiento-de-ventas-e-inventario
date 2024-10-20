@@ -3,7 +3,7 @@ const axios = require("axios");
 module.exports = {
     getClientByDni: async function(dni, token) {
         try {
-            const response = await axios.get(`http://clients_api:8080/clients/${dni}`, {
+            const response = await axios.get(`http://localhost:8082/clients/${dni}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

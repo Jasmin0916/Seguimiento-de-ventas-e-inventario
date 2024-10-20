@@ -1,89 +1,53 @@
-const { productModel } = require("../models/product.model");
+const productService = require("../services/productService");
 
-// Listar todos los productos
 const getProduct = async (req, res) => {
     try {
-        const products = await productModel.find({});
+        const products = await productService.getAllProducts();
         res.json(products);
     } catch (error) {
-        console.error('Error fetching products:', error);
-        res.status(500).json({ error: 'Error al obtener los productos' });
+        res.status(500).json({ error: error.message });
     }
 };
-// Registrar un nuevo producto
+
 const createProduct = async (req, res) => {
     try {
-        const { name, salePrice, purchasePrice, quantity, productType } = req.body;
-
-        const newProduct = new productModel({
-            name,
-            salePrice,
-            purchasePrice,
-            quantity,
-            productType
-        });
-
-        const data = await newProduct.save();
-        res.status(201).json(data);
+        const productData = req.body;
+        const newProduct = await productService.createProduct(productData);
+        res.status(201).json(newProduct);
     } catch (error) {
-        console.error('Error creating product:', error);
-        res.status(400).json({ error: 'Error al registrar el producto' });
+        res.status(400).json({ error: error.message });
     }
 };
-// Obtener un producto por ID
+
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await productModel.findById(id);
-        if (!product) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
-        }
+        const product = await productService.getProductById(id);
         res.json(product);
     } catch (error) {
-        console.error('Error fetching product:', error);
-        res.status(500).json({ error: 'Error al obtener el producto' });
+        res.status(error.message === 'Producto no encontrado' ? 404 : 500).json({ error: error.message });
     }
 };
-// Actualizar la cantidad de un producto
+
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, salePrice, purchasePrice, quantity, productType } = req.body;
-
-        const product = await productModel.findById(id);
-        if (!product) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
-        }
-
-        product.name = name || product.name;
-        product.salePrice = salePrice || product.salePrice;
-        product.purchasePrice = purchasePrice || product.purchasePrice;
-        product.quantity = quantity || product.quantity;
-        product.productType = productType || product.productType;
-
-        const updatedProduct = await product.save();
+        const productData = req.body;
+        const updatedProduct = await productService.updateProduct(id, productData);
         res.json(updatedProduct);
     } catch (error) {
-        console.error('Error updating product:', error);
-        res.status(400).json({ error: 'Error al actualizar el producto' });
+        res.status(error.message === 'Producto no encontrado' ? 404 : 400).json({ error: error.message });
     }
 };
-// Eliminar un producto
+
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        // Encontrar el producto por ID
-        const product = await productModel.findById(id);
-        if (!product) {
-            return res.status(404).json({ error: 'Producto no encontrado' });
-        }
-        // Eliminar el producto
-        await productModel.findByIdAndDelete(id);
-        res.status(200).json({ message: 'Producto eliminado correctamente' });
+        const result = await productService.deleteProduct(id);
+        res.status(200).json(result);
     } catch (error) {
-        console.error('Error deleting product:', error);
-        res.status(500).json({ error: 'Error al eliminar el producto' });
+        res.status(error.message === 'Producto no encontrado' ? 404 : 500).json({ error: error.message });
     }
 };
 
-module.exports = { getProduct, createProduct, getProductById, updateProduct, deleteProduct }; 
+module.exports = { getProduct, createProduct, getProductById, updateProduct, deleteProduct };
