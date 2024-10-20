@@ -2,11 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const authRouter = require('./src/router/auth.router');
 const mongoose = require("mongoose");
+require('dotenv').config();
 const app = express();
-const port = 8084;
+const port = process.env.PORT || 8080;
 
 // Conectar a MongoDB
-const uri = "mongodb+srv://nodeJS:NodeJS4321@cluster0.wr9ipqk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri).then(() => {
     console.log('Connected to MongoDB Atlas');
