@@ -4,10 +4,11 @@ version = 1
 name = "javascript"
 
   [analyzers.meta]
+  plugins = ["angularjs"]
   environment = [
     "nodejs",
     "mongo"
   ]
-  [[analyzers]]
+
+[[analyzers]]
 name = "test-coverage"
-enabled = true
