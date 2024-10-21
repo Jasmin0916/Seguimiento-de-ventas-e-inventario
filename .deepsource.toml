@@ -8,3 +8,6 @@ name = "javascript"
     "nodejs",
     "mongo"
   ]
+  [[analyzers]]
+name = "test-coverage"
+enabled = true
